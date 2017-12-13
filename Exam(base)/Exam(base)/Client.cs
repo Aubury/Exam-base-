@@ -16,6 +16,7 @@ namespace Exam_base_
             _bank = b;
 
             _bank.Withdrawn += _bank_Withdrawn;
+            _bank.Not_enough_money += _try_Withdrawn;
 
         }
 
@@ -24,12 +25,16 @@ namespace Exam_base_
             Console.WriteLine($"\t---------------Client\"{Name}\"---- Withdrawn : {e.OperationSum}$------------ \n");
 
         }
-
-        public void Message(object sender, AccountEventArgs e)
+        private void _try_Withdrawn(object sender, AccountEventArgs e)
         {
-            Console.WriteLine($"\t--------------Client\"{Name}\"---- Withdrawn : {e.OperationSum}$--------------- \n");
+            Console.WriteLine($"\t---------------Client\"{Name}\"---- tries to withdraw money : {e.OperationSum}$------------ \n");
 
         }
+        //public void Message(object sender, AccountEventArgs e)
+        //{
+        //    Console.WriteLine($"\t--------------Client\"{Name}\"---- Withdrawn : {e.OperationSum}$--------------- \n");
+
+        //}
 
     }
 }

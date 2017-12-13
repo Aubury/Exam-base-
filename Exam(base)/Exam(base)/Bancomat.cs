@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Exam_base_
 {
-    class Bancomat
+    class Bancomat:Logger
     {
         public event EventHandler<AccountEventArgs> Adding;
         public event EventHandler<AccountEventArgs> Withdrawn;
         public event EventHandler<AccountEventArgs> Balance_Zero;
+        public event EventHandler<AccountEventArgs> Min_Balance;
+        public event EventHandler<AccountEventArgs> Not_enough_money;
 
 
 
@@ -43,7 +45,7 @@ namespace Exam_base_
 
             if (Current_amount - sum < 0)
             {
-                if (Withdrawn != null) { Withdrawn(this, new AccountEventArgs($"\t  ************* Not enough money in the ATM ****************\n\n" + ToString(), Current_amount, sum)); }
+                if (Not_enough_money != null) { Not_enough_money(this, new AccountEventArgs($"\t  ************* Not enough money in the ATM ****************\n\n" + ToString(), Current_amount, sum)); }
             }
 
             if (Current_amount - sum == 0)
@@ -51,7 +53,11 @@ namespace Exam_base_
                 Current_amount -= sum;
                 if (Balance_Zero != null) { Balance_Zero(this, new AccountEventArgs($"\t  -------------  Withdraw {sum}$ -------------\n\n**************** Bancomat is empty ***************\n\n" + ToString(), Current_amount, sum)); }
             }
-
+            if (Current_amount - sum < balance && Current_amount - sum > 0) 
+            {
+                Current_amount -= sum;
+                if (Min_Balance != null) { Min_Balance(this, new AccountEventArgs($"\t  -------------  Withdraw {sum}$ -------------\n\n**************** Balance is less than the minimum ***************\n\n" + ToString(), Current_amount, sum)); }
+            }
             if (Current_amount - sum > 0)
             {
                 if (Withdrawn != null)
