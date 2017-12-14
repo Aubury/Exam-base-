@@ -9,13 +9,13 @@ namespace Exam_base_
 {
    public  class Logger
     {
-        Bancomat _bank;
+      
 
         private static readonly string currentDir = Directory.GetCurrentDirectory();
         private static string pathToLog = Path.Combine(currentDir, "Log.txt");
         FileInfo fi = new FileInfo(pathToLog);
         FileStream s = null;
-        public  void WriteLine(string message)
+        public void WriteLine(string message)
         {
             if (!fi.Exists)
                 try { s = fi.Create(); }

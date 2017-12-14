@@ -40,6 +40,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -49,27 +50,49 @@ namespace Exam_base_
     {
         static void Main(string[] args)
         {
+            Inbox box = new Inbox();
+           // string adress= box.Folder();
+            //Console.WriteLine(adress.ToString());
+
             Bancomat account = new Bancomat(456, "str.Lubarskogo, 65");
             Collector collect = new Collector(1, account);
             account.Put_money(1000);
-            Console.WriteLine("=============================================================================\n\n");
+             box.FileWatcher();
             do
             {
-                Console.WriteLine("Input you name: ");
+               
+                Console.WriteLine("\t===================================");
+                Console.WriteLine("\t|                                 | ");
+                Console.WriteLine("\t| Input you name:                 |");
+                Console.WriteLine("\t|                                 | ");
+                Console.Write("\t|\t ");
                 string Name = Console.ReadLine();
+                Console.WriteLine("\t|                                 | ");
 
                 Client client = new Client(Name, account);
                 Management manag = new Management("Tom", account, client);
 
-                Console.WriteLine("How much you want to withdraw?");
+                Console.WriteLine("\t| How much you want to withdraw?  |");
+                Console.WriteLine("\t|                                 | ");
+                Console.Write("\t|\t ");
                 int summ = Int32.Parse(Console.ReadLine());
+                Console.WriteLine("\t|                                 | ");
 
+                Console.WriteLine("\t===================================\n\n");
                 Request req = new Request();
                 req.ClientName = client.Name;
                 req.Sum = summ;
-                //Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(req.ClientName+req.Sum);
-                string json = JsonConvert.SerializeObject(req, Formatting.Indented);
-                account.Withdraw(summ);
+              
+               // string json = JsonConvert.SerializeObject(req, Formatting.Indented);
+               // box.FileWatcher(json);
+                //File.WriteAllText("Request.txt", json);
+                File.WriteAllText("Request.json", JsonConvert.SerializeObject(req));
+               
+
+
+
+                account.Withdraw(req);
+                
 
 
 

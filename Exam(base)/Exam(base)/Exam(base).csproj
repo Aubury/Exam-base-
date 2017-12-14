@@ -51,6 +51,7 @@
     <Compile Include="Bancomat.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Collector.cs" />
+    <Compile Include="Inbox.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Management.cs" />
     <Compile Include="Program.cs" />

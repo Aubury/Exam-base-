@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Exam_base_
 {
-    class Bancomat:Logger
+    class Bancomat
     {
         public event EventHandler<AccountEventArgs> Adding;
         public event EventHandler<AccountEventArgs> Withdrawn;
@@ -15,7 +15,7 @@ namespace Exam_base_
         public event EventHandler<AccountEventArgs> Not_enough_money;
 
 
-
+        Logger log = new Logger();
         public int ID { get; set; }
         public string Address { get; set; }
         public decimal Current_amount { get; set; }
@@ -38,32 +38,32 @@ namespace Exam_base_
         public void Put_money(int sum)
         {
             Current_amount += sum;
-            if (Adding != null) { Adding(this, new AccountEventArgs($"\t  ****************  Replenishment of ATM at {sum}$  ****************\n ", sum, Current_amount)); }
+           if (Adding != null) { Adding(this, new AccountEventArgs($"\t  ****************  Replenishment of ATM at {sum}$  ****************\n ", sum, Current_amount)); }
         }
-        public void Withdraw(int sum)
+        public void Withdraw(Request req)
         {
 
-            if (Current_amount - sum < 0)
+            if (Current_amount - req.Sum < 0)
             {
-                if (Not_enough_money != null) { Not_enough_money(this, new AccountEventArgs($"\t  ************* Not enough money in the ATM ****************\n\n" + ToString(), Current_amount, sum)); }
+                if (Not_enough_money != null) { Not_enough_money(this, new AccountEventArgs($"\t  ************* Not enough money in the ATM ****************\n\n" + ToString(), Current_amount, req.Sum)); }
             }
 
-            if (Current_amount - sum == 0)
+            if (Current_amount - req.Sum == 0)
             {
-                Current_amount -= sum;
-                if (Balance_Zero != null) { Balance_Zero(this, new AccountEventArgs($"\t  -------------  Withdraw {sum}$ -------------\n\n**************** Bancomat is empty ***************\n\n" + ToString(), Current_amount, sum)); }
+                Current_amount -= req.Sum;
+                if (Balance_Zero != null) { Balance_Zero(this, new AccountEventArgs($"\t  -------------  Withdraw {req.Sum}$ -------------\n\n**************** Bancomat is empty ***************\n\n" + ToString(), Current_amount, req.Sum)); }
             }
-            if (Current_amount - sum < balance && Current_amount - sum > 0) 
+            if (Current_amount - req.Sum < balance && Current_amount - req.Sum > 0) 
             {
-                Current_amount -= sum;
-                if (Min_Balance != null) { Min_Balance(this, new AccountEventArgs($"\t  -------------  Withdraw {sum}$ -------------\n\n**************** Balance is less than the minimum ***************\n\n" + ToString(), Current_amount, sum)); }
+                Current_amount -= req.Sum;
+                if (Min_Balance != null) { Min_Balance(this, new AccountEventArgs($"\t  -------------  Withdraw {req.Sum}$ -------------\n\n**************** Balance is less than the minimum ***************\n\n" + ToString(), Current_amount, req.Sum)); }
             }
-            if (Current_amount - sum > 0)
+            if (Current_amount - req.Sum > 0)
             {
                 if (Withdrawn != null)
                 {
-                    Current_amount -= sum;
-                    Withdrawn(this, new AccountEventArgs($"\t -------------  Withdraw {sum}$ -------------\n", Current_amount, sum));
+                    Current_amount -= req.Sum;
+                    Withdrawn(this, new AccountEventArgs($"\t -------------  Withdraw {req.Sum}$ -------------\n", Current_amount, req.Sum));
 
                 }
 

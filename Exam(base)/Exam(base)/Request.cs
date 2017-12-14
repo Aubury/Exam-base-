@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 namespace Exam_base_
 {
    [JsonObject(MemberSerialization.OptIn)]
-    class Request
+   public class Request
     {
-        Client cl;
+       
         [JsonProperty("ClientName")]
         public string ClientName { get; set; }
         [JsonProperty("Operation summ")]
