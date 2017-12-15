@@ -11,9 +11,10 @@ namespace Exam_base_
    public class Request
     {
        
-        [JsonProperty("ClientName")]
+        [JsonProperty("Client Name : ")]
         public string ClientName { get; set; }
-        [JsonProperty("Operation summ")]
+
+        [JsonProperty("Operation summ : ")]
         public int Sum;
     }
 }

@@ -8,6 +8,7 @@ namespace Exam_base_
 {
     class AccountEventArgs
     {
+        
         public readonly string Message;
         public decimal Rest;
         public decimal OperationSum;

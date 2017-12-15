@@ -8,6 +8,7 @@ namespace Exam_base_
 {
     class Client
     {
+        Logger log = new Logger();
         Bancomat _bank;
         public string Name { get; set; }
         public Client(string name, Bancomat b)
@@ -17,24 +18,18 @@ namespace Exam_base_
 
             _bank.Withdrawn += _bank_Withdrawn;
             _bank.Not_enough_money += _try_Withdrawn;
-
         }
 
         private void _bank_Withdrawn(object sender, AccountEventArgs e)
         {
-            Console.WriteLine($"\t---------------Client\"{Name}\"---- Withdrawn : {e.OperationSum}$------------ \n");
+            log.WriteLine($"\t---------------Client\"{Name}\"---- Withdrawn : {e.OperationSum}$------------ \n");
 
         }
         private void _try_Withdrawn(object sender, AccountEventArgs e)
         {
-            Console.WriteLine($"\t---------------Client\"{Name}\"---- tries to withdraw money : {e.OperationSum}$------------ \n");
+            log.WriteLine($"\t---------------Client\"{Name}\"---- tries to withdraw money : {e.OperationSum}$------------ \n");
 
         }
-        //public void Message(object sender, AccountEventArgs e)
-        //{
-        //    Console.WriteLine($"\t--------------Client\"{Name}\"---- Withdrawn : {e.OperationSum}$--------------- \n");
-
-        //}
 
     }
 }

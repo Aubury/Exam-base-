@@ -26,11 +26,13 @@
 //    public int Sum;
 //}
 
-//В этом случае, его сериализация в JSON будет такая: {"ClientName":"John Smith","Sum":850} . Для сериализации использовать NewtonSoft.Json
+//В этом случае, его сериализация в JSON будет такая: {"ClientName":"John Smith","Sum":850} . 
+//Для сериализации использовать NewtonSoft.Json
 
 //Управление счетом будет осуществлятся посредством поступающих запросов в виде файлов.
-//Применить FileWatcher для контроля над определенной папкой.При попадани в эту папку (Входящие) файла, являющегося сериализацией объекта Request,
-//списывать деньги со счета.Успешно обработанные файлы перемещать в папку Обработанные.Файлы, не содержащие корректной сериализации Request,
+//Применить FileWatcher для контроля над определенной папкой.При попадани в эту папку (Входящие) файла, 
+//являющегося сериализацией объекта Request,списывать деньги со счета.
+//Успешно обработанные файлы перемещать в папку Обработанные.Файлы, не содержащие корректной сериализации Request,
 //перемещать в папку Ошибки.
 
 
@@ -51,13 +53,15 @@ namespace Exam_base_
         static void Main(string[] args)
         {
             Inbox box = new Inbox();
-           // string adress= box.Folder();
-            //Console.WriteLine(adress.ToString());
+            box.Folder_processed();
+            box.Folder_Errors();
+         
 
             Bancomat account = new Bancomat(456, "str.Lubarskogo, 65");
             Collector collect = new Collector(1, account);
             account.Put_money(1000);
-             box.FileWatcher();
+           
+
             do
             {
                
@@ -75,43 +79,31 @@ namespace Exam_base_
                 Console.WriteLine("\t| How much you want to withdraw?  |");
                 Console.WriteLine("\t|                                 | ");
                 Console.Write("\t|\t ");
+
                 int summ = Int32.Parse(Console.ReadLine());
                 Console.WriteLine("\t|                                 | ");
 
-                Console.WriteLine("\t===================================\n\n");
+                
                 Request req = new Request();
                 req.ClientName = client.Name;
                 req.Sum = summ;
-              
-               // string json = JsonConvert.SerializeObject(req, Formatting.Indented);
-               // box.FileWatcher(json);
-                //File.WriteAllText("Request.txt", json);
-                File.WriteAllText("Request.json", JsonConvert.SerializeObject(req));
-               
 
+                File.WriteAllText(@"FileWatcher\Request.json", JsonConvert.SerializeObject(req));
 
-
-                account.Withdraw(req);
-                
-
-
-
-            }
+                if(box.FileWatcher()==true)
+                {
+                   account.Withdraw(req);
+                   box.Move_File_Folder_processed();
+                 Console.WriteLine($"\t|   Get you {req.Sum}$                   |");
+                }
+              Console.WriteLine("\t===================================\n\n");
+              }
             while (Console.ReadKey().Key != ConsoleKey.Escape);
                 
-            
-            
-           
-            //Console.WriteLine("==============================================================================\n\n");
-            //account.Withdraw(200);
-            //Console.WriteLine("===============================================================================\n\n");
-            //account.Withdraw(300);
-            //Console.WriteLine("===============================================================================\n\n");
-            //account.Put_money(500);
-            //Console.WriteLine("===============================================================================\n\n");
-            //account.Withdraw(550);
 
             Console.ReadLine();
         }
+    
     }
+   
 }
